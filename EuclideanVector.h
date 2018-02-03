@@ -70,7 +70,7 @@ public:
   }
   //Overloaded Operations
   // e.g. a+=b
-  EuclideanVector& operator+=(EuclideanVector eVec) {
+  EuclideanVector& operator+=(const EuclideanVector& eVec) {
     this->norm = 0;
     if ( eVec.dimension == this->dimension ) {
       for ( int a = 0; a < this->dimension; a++ ) {
@@ -80,7 +80,7 @@ public:
     return *this;
   }
   // e.g. a-=b
-  EuclideanVector& operator-=(EuclideanVector eVec) {
+  EuclideanVector& operator-=(const EuclideanVector& eVec) {
     this->norm = 0;
     if ( eVec.dimension == this->dimension ) {
       for ( int a = 0; a < this->dimension; a++ ) {
@@ -114,7 +114,7 @@ public:
   //Nonmember functions
 
   //----------------bool statement-------------//
-    bool& operator==(EuclideanVector eVec) {
+    bool& operator==(const EuclideanVector& eVec) {
       bool toret = true;
       bool *tof = &toret;
       if ( this->dimension == eVec.dimension ) {
@@ -129,7 +129,7 @@ public:
       return *tof;
     }
 
-    bool& operator!=(EuclideanVector eVec) {
+    bool& operator!=(const EuclideanVector& eVec) {
       bool toret = false;
       bool *tof = &toret;
       if ( this->dimension == eVec.dimension ) {
@@ -145,7 +145,7 @@ public:
     }
 
   //------------ADDING vectors-----------//
-  EuclideanVector& operator+(EuclideanVector eVec) {
+  EuclideanVector& operator+(const EuclideanVector& eVec) {
     EuclideanVector *toRet;
     if ( eVec.dimension == this->dimension ) {
       toRet = new EuclideanVector(this->dimension);
@@ -156,18 +156,18 @@ public:
     return *toRet;
   }
   //---------Subtracting vectors-------//
-  EuclideanVector& operator-(EuclideanVector eVec) {
+  EuclideanVector& operator-(const EuclideanVector& eVec) {
     EuclideanVector *toRet;
     if ( eVec.dimension == this->dimension ) {
       toRet = new EuclideanVector(this->dimension);
       for ( int a = 0; a < this->dimension; a++ ) {
         toRet->vec[a] = this->vec[a] - eVec.vec[a];
       }
-    }
+    }  else toRet = nullptr;
     return *toRet;
   }
   //----------------Dot product---------------//
-    double& operator*(EuclideanVector eVec) {
+    double& operator*(const EuclideanVector& eVec) {
     double val = 0;
     double *dotprod = &val;
     if ( eVec.dimension == this->dimension ) {
@@ -176,6 +176,25 @@ public:
       }
     }
     return *dotprod;
+  }
+
+  //--------------Scalar Multiplication-------------//
+  EuclideanVector& operator*(double val) {
+    EuclideanVector *toRet;
+    toRet = new EuclideanVector(this->dimension);
+    for ( int a = 0; a < this->dimension; a++ ) {
+      toRet->vec[a] = val * this->vec[a];
+    }
+    return *toRet;
+  }
+
+  friend EuclideanVector& operator*(double val, const EuclideanVector& e) {
+    EuclideanVector *toRet;
+    toRet = new EuclideanVector(e.dimension);
+    for ( int a = 0; a < e.dimension; a++ ) {
+      toRet->vec[a] = val * e.vec[a];
+    }
+    return *toRet;
   }
 
   //Typecasting operators
@@ -234,6 +253,10 @@ private:
   void setVal(std::initializer_list<double> arr);
 };
 
+//Friend functions
+EuclideanVector& operator*(double, const EuclideanVector&);
+
+//other functions
 void EuclideanVector::printVec() const {
   std::cout << "Printing vector" << std::endl;
   for ( int a = 0; a < dimension; a++ ) {
