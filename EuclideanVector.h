@@ -215,7 +215,17 @@ public:
     }
     return *toRet;
   }
-
+  //--------------Ostream Overload------------//
+  friend std::ostream& operator<< (std::ostream& stream,
+    const EuclideanVector& eVec) {
+      stream << "[";
+      for ( int a = 0; a < eVec.dimension; a++ ) {
+        stream << eVec.vec[a];
+        if ( a < eVec.dimension - 1 ) stream << " ";
+      }
+      stream << "]";
+    return stream;
+  }
   //Typecasting operators
   //vector typecast
   operator std::vector<double>() const {
@@ -274,6 +284,7 @@ private:
 
 //Friend functions
 EuclideanVector& operator*(double, const EuclideanVector&);
+std::ostream& operator<< (std::ostream&, const EuclideanVector& );
 
 //other functions
 void EuclideanVector::printVec() const {
