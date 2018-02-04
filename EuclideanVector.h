@@ -27,6 +27,14 @@ public:
     EuclideanVector(arr.size()) {
     setVal(arr);
   }
+  //Generic iterator type
+  template<typename T>
+  EuclideanVector(T beg, T end) : EuclideanVector(end-beg) {
+    for ( int a = 0; a < this->dimension; a++ ) {
+      this->vec[a] = *(beg + a);
+    }
+  }
+
   //Move Constructor
   EuclideanVector(EuclideanVector&& e) : vec(std::move(e.vec)),
   dimension(std::move(e.dimension))
@@ -36,6 +44,7 @@ public:
     e.dimension = 0;
     e.norm = 0;
   }
+
   //Copy Constructor
   EuclideanVector(const EuclideanVector& e) :
     vec(e.vec), dimension(e.dimension), norm(e.norm)
@@ -197,6 +206,16 @@ public:
     return *toRet;
   }
 
+  //-------------Scalar Division----------//
+  EuclideanVector& operator/(double val) {
+    EuclideanVector *toRet;
+    toRet = new EuclideanVector(this->dimension);
+    for ( int a = 0; a < this->dimension; a++ ) {
+      toRet->vec[a] = this->vec[a] / val;
+    }
+    return *toRet;
+  }
+
   //Typecasting operators
   //vector typecast
   operator std::vector<double>() const {
@@ -244,7 +263,7 @@ public:
   }
   //--------------------------------------//
   void printVec() const;
-
+//Encapsulation
 private:
   double *vec;
   int dimension;

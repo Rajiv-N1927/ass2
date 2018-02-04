@@ -5,14 +5,14 @@
 #include "EuclideanVector.h"
 
 int main(int argc, char ** argv) {
-  EuclideanVector vec1 { 1, 2, 3 };
+  EuclideanVector vec1 { 1, 6, 3 };
   EuclideanVector vec2 { 1, 3, 7 };
-  EuclideanVector vec4 { 2, 3, 1 };
-  //vec1 += vec2;
-  EuclideanVector vec3;
-  vec3 = vec1 * 3;
-  vec3.printVec();
+  EuclideanVector vec3 { 2, 3, 1 };
 
+  EuclideanVector vec4 = (3 * vec2)/5;
+  vec4.printVec();
+
+  std::cout << vec4.getEuclideanNorm() << std::endl;
 
   return 0;
 }
